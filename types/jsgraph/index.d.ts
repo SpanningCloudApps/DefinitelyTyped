@@ -3,16 +3,13 @@
 // Definitions by: Joel Rosinbum <https://github.com/rosinbum>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-
-declare namespace jsgraph {
-
-    interface jsGraphStatic {
+export interface jsgraph {
         directed: Directed;
-    }
+}
 
     export interface VertexRequest {
         u: string;
-        p: any
+        p: any;
     }
 
     export interface JsGraphResponse {
@@ -22,7 +19,7 @@ declare namespace jsgraph {
 
     export interface Edge {
         u: string;
-        v: string
+        v: string;
     }
 
     export interface EdgeRequest {
@@ -30,8 +27,8 @@ declare namespace jsgraph {
         p: any;
     }
 
-    export interface DirectedGraph {
-        new(): DirectedGraph;
+    export class DirectedGraph {
+        constructor();
 
         setGraphName(name: string): JsGraphResponse;
 
@@ -61,12 +58,11 @@ declare namespace jsgraph {
 
         toJSON(): string;
 
-        stringify(replacer: Function, space?: number): string;
+        stringify(replacer: () => string, space?: number): string;
 
         fromObject(graph: any): JsGraphResponse;
 
-
-        //Vertex functions
+        // Vertex functions
         addVertex(vertex: VertexRequest): JsGraphResponse;
 
         removeVertex(vertex: string): boolean;
@@ -87,7 +83,7 @@ declare namespace jsgraph {
 
         outEdges(vertex: string): Edge[];
 
-        //Edge functions
+        // Edge functions
         addEdge(request: EdgeRequest): JsGraphResponse;
 
         isEdge(edge: Edge): boolean;
@@ -101,28 +97,36 @@ declare namespace jsgraph {
         hasEdgeProperty(edge: Edge): boolean;
 
         clearEdgeProperty(edge: Edge): boolean;
+    }
 
+    export interface VertexGraph {
+        u: string;
+        g: DirectedGraph;
+    }
 
+    export interface EdgeGraph {
+        e: Edge;
+        g: DirectedGraph;
     }
 
     export interface Visitor {
-        initializeVertex(req: { u: string, g: DirectedGraph }): void;
+        initializeVertex(req: VertexGraph): void;
 
-        startVertex(req: { u: string, g: DirectedGraph }): void;
+        startVertex(req: VertexGraph): void;
 
-        discoverVertex(req: { u: string, g: DirectedGraph }): void;
+        discoverVertex(req: VertexGraph): void;
 
-        examineVertex(req: { u: string, g: DirectedGraph }): void;
+        examineVertex(req: VertexGraph): void;
 
-        examineEdge(req: { e: Edge, g: DirectedGraph }): void;
+        examineEdge(req: EdgeGraph): void;
 
-        nonTreeEdge(req: { e: Edge, g: DirectedGraph }): void;
+        nonTreeEdge(req: EdgeGraph): void;
 
-        grayTarget(req: { e: Edge, g: DirectedGraph }): void;
+        grayTarget(req: EdgeGraph): void;
 
-        blackTarget(req: { e: Edge, g: DirectedGraph }): void;
+        blackTarget(req: EdgeGraph): void;
 
-        finishVertex(req: { u: string, g: DirectedGraph }): void;
+        finishVertex(req: VertexGraph): void;
     }
 
     export interface TraversalContext {
@@ -139,17 +143,17 @@ declare namespace jsgraph {
     }
 
     export interface TraversalParams {
-        digraph: DirectedGraph,
-        visitor: Visitor,
-        options?: TraversalOptions
+        digraph: DirectedGraph;
+        visitor: Visitor;
+        options?: TraversalOptions;
     }
 
     export interface TraversalResult {
         error?: any;
-        result?: TraversalContext
+        result?: TraversalContext;
     }
 
-    export type colors = { white: 0, gray: 1, black: 2 };
+    export interface colors { white: 0; gray: 1; black: 2; }
 
     export interface Directed {
         breadthFirstTraverse(params: TraversalParams): TraversalResult;
@@ -165,10 +169,4 @@ declare namespace jsgraph {
         transpose(graph: DirectedGraph): { error?: any, result?: DirectedGraph };
 
         directedGraph: DirectedGraph;
-
     }
-}
-
-declare var jsgraph: jsgraph.jsGraphStatic;
-
-export = jsgraph;

@@ -1,29 +1,28 @@
 import * as jsgraph from 'jsgraph';
-import {Edge, JsGraphResponse} from 'jsgraph';
 
-const mygraph = jsgraph.directed.create().result;
+const mygraph = jsgraph.jsgraph.directed.create().result;
 
-let name: string = 'my name';
+let name = 'my name';
 mygraph.setGraphName(name);
 name = mygraph.getGraphName();
-let description: string = 'My desc';
+let description = 'My desc';
 mygraph.setGraphDescription(description);
 description = mygraph.getGraphDescription();
 
 let count: number = mygraph.verticesCount();
 let verticies: string [] = mygraph.getVertices();
 count = mygraph.getEdgeCount();
-let edges: Edge[] = mygraph.getEdeges();
+let edges: jsgraph.Edge[] = mygraph.getEdeges();
 count = mygraph.rootVerticesCount();
 verticies = mygraph.getRootVertices();
 count = mygraph.leafVerticesCount();
 verticies = mygraph.getLeafVertices();
 let json: string = mygraph.toObject();
 json = mygraph.toJSON();
-json = mygraph.stringify( () => {return}, 2);
+json = mygraph.stringify(() => {return;}, 2);
 const graph2 = mygraph.fromObject(mygraph);
 
-let response: JsGraphResponse = mygraph.addVertex({u: 'a', p: 'some data'});
+let response: jsgraph.JsGraphResponse = mygraph.addVertex({u: 'a', p: 'some data'});
 let bool: boolean = mygraph.removeVertex('a');
 let property: string = mygraph.getVertexProperty('a');
 mygraph.setVertexProperty({u: 'a', p: property});
